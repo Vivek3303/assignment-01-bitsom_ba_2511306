@@ -1,0 +1,9 @@
+Database Recommendation
+
+For a healthcare startup building a patient management system, I highly recommend **MySQL (RDBMS)** over MongoDB. 
+
+This decision is driven by the principles of ACID vs. BASE and the CAP theorem. A patient management system handles critical, life-altering data such as medical histories, prescriptions, and allergies. This requires **ACID (Atomicity, Consistency, Isolation, Durability)** compliance. RDBMS architectures prioritize immediate data consistency. If a doctor updates a patient's medication, that update must be instantly visible to any nurse or pharmacy accessing the database. 
+
+MongoDB, conversely, leans toward **BASE (Basically Available, Soft state, Eventual consistency)** and prioritizes Availability and Partition Tolerance (AP in the CAP theorem) over immediate Consistency. While "eventual consistency" is acceptable for social media likes or product catalogs, it is highly dangerous in healthcare; a delay in updating a severe drug allergy could be fatal. Therefore, a relational database ensuring strict data integrity and immediate consistency is mandatory.
+
+If a fraud detection module is added, my core answer does not change, but the architecture expands. Fraud detection often requires ingesting massive volumes of unstructured data at high velocity (e.g., login metadata, IP address logs, behavioral tracking) and running complex pattern-matching algorithms. Relational databases can struggle with scaling high-throughput, schema-less log insertion. In this scenario, I would recommend a **polyglot persistence architecture**: keeping MySQL as the central source of truth for all critical patient and transactional data, while utilizing a NoSQL solution (like MongoDB or a graph database) alongside it specifically to ingest and analyze the high-volume behavioral logs required for the fraud detection algorithms.
